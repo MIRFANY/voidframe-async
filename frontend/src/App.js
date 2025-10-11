@@ -2,17 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './components/Dashboard';
-<<<<<<< HEAD
-import DPRAnalyzer from './components/DPRAnalyzer';
+import DPRAnalyzer from './components/DPRAnalyzer.js';
 
-export default function App() {
-  return (
-    <div style={{ padding: 20 }}>
-      <h1>DPR Evaluator Dashboard</h1>
-      <Dashboard />
-      <DPRAnalyzer />
-    </div>
-=======
 import './styles.css';
 
 export default function App() {
@@ -21,8 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<DPRAnalyzer />} />
       </Routes>
     </BrowserRouter>
->>>>>>> 3564635512c00925752e81e887232cc00ccad7c4
   );
 }
