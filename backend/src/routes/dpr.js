@@ -8,5 +8,6 @@ const dprController = require('../controllers/dprController');
 router.post('/upload', upload.single('file'), dprController.uploadDPR);
 router.get('/:id', dprController.getDprById);
 router.post('/:id/feedback', dprController.submitFeedback);
-router.post("/analyze", dprController.handleDPR);
+router.post("/dpr/analyze", dprController.handleDPR);
+
 module.exports = router;

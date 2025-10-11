@@ -1,10 +1,7 @@
-// backend/services/genaiService.js
-// Generic GenAI API integration (no OpenAI SDK)
-
 import axios from "axios";
 
-const GENAI_API_URL = process.env.GENAI_API_URL;   // Example: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
-const GENAI_API_KEY = process.env.GENAI_API_KEY;   // e.g. Gemini API key or your local model token
+const GENAI_API_URL = process.env.GENAI_API_URL;    
+const GENAI_API_KEY = process.env.GENAI_API_KEY;    
 
 /**
  * Analyze DPR content using your configured GenAI API
@@ -28,7 +25,6 @@ ${JSON.stringify(structuredFields)}
 `;
 
   try {
-    // ===== EXAMPLE 1: Google Gemini =====
     const resp = await axios.post(
       `${GENAI_API_URL}?key=${GENAI_API_KEY}`,
       {
@@ -43,8 +39,6 @@ ${JSON.stringify(structuredFields)}
         headers: { "Content-Type": "application/json" },
       }
     );
-
-    // For Gemini-like API response
     const modelResponse = resp.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     let parsed;
     try {

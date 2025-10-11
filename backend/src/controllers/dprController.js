@@ -3,8 +3,9 @@ const Dpr = require('../models/Dpr');
 const textService = require('../services/textService');
 const imageService = require('../services/imageService');
 const mlService = require('../services/mlService');
+const { analyzeDPR } = require("../services/genaiService"); 
 
-async function analyzeDPR(text) {
+async function analyzeDPR(text, structuredField) {
   const wordCount = text.split(/\s+/).length;
   const complexity = wordCount > 300 ? "Detailed" : "Brief";
 
@@ -84,11 +85,11 @@ module.exports = {
    async handleDPR(req, res) {
     console.log("Incoming DPR analyze request:", req.body);
     try {
-      const { dprText } = req.body;
+      const { dprText, structuredFields } = req.body;
       if (!dprText) throw new Error("Missing DPR text");
 
-      // ✅ Now this function exists
-      const analysis = await analyzeDPR(dprText);
+      // ✅ Call the GenAI API service
+      const analysis = await analyzeDPR(dprText, structuredFields);
 
       res.json({ success: true, analysis });
     } catch (err) {

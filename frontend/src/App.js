@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './components/Dashboard';
-import DPRAnalyzer from './components/DPRAnalyzer.js';
 
 import './styles.css';
 
