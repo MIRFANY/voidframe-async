@@ -17,6 +17,7 @@ app.use('/api', routes);
 
 const PORT = process.env.PORT || 5000;
 
+// Try to connect to MongoDB; if it fails, fall back to running without persistence
 mongoose.connect(process.env.MONGO_URI || config.mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -26,5 +27,7 @@ mongoose.connect(process.env.MONGO_URI || config.mongoUri, {
     app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
   })
   .catch(err => {
-    console.error('Failed to connect to MongoDB', err);
+    console.error('Failed to connect to MongoDB, starting server without DB', err);
+    // Start server without DB - controllers should handle missing DB gracefully
+    app.listen(PORT, () => console.log(`Server running on port ${PORT} (no DB)`));
   });
