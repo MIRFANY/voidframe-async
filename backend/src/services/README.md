@@ -1,0 +1,1 @@
+Services implement domain logic: textService (NLP), imageService (OpenCV/TensorFlow), mlService (train/predict). Each should expose async functions and return normalized feature objects for the ML model.
