@@ -44,5 +44,15 @@ module.exports = {
     dpr.feedback = feedback;
     await dpr.save();
     res.json({ success: true });
+  },
+  
+  async handleDPR(req, res) {
+    try {
+      const { dprText, structuredFields } = req.body;
+      const analysis = await analyzeDPR(dprText, structuredFields);
+      res.json({ success: true, analysis });
+    } catch (err) {
+      res.status(500).json({ success: false, error: err.message });
+    }
   }
 };
