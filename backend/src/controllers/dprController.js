@@ -36,7 +36,6 @@ async function analyzeDPR(text) {
 
 module.exports = {
   async uploadDPR(req, res) {
-    // For demo, assume file is text or image; in production detect MIME and branch
     try {
       const { originalname, path } = req.file || {};
       const dpr = new Dpr({ filename: originalname, status: 'processing' });
