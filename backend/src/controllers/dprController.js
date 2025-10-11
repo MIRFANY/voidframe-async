@@ -8,23 +8,29 @@ module.exports = {
   async uploadDPR(req, res) {
     // For demo, assume file is text or image; in production detect MIME and branch
     try {
-      const { originalname, path } = req.file || {};
-      const dpr = new Dpr({ filename: originalname, status: 'processing' });
-      await dpr.save();
+  const { originalname, path } = req.file || {};
+  const dpr = new Dpr({ filename: originalname, status: 'processing' });
+  await dpr.save();
 
-      // Example: run text analysis (if text) and image analysis (if image)
-      const textResults = await textService.analyzeTextFromFile(path);
-      const imageResults = await imageService.analyzeImageFromPath(path);
+  // Text extraction from PDF
+  const textResults = await textService.analyzeTextFromFile(path);
+  // Image analysis placeholder (could be extended to parse embedded images)
+  const imageResults = await imageService.analyzeImageFromPath(path);
 
-      // Combine features and run risk prediction
-      const features = { ...textResults.features, ...imageResults.features };
-      const risk = await mlService.predictRisk(features);
+  // Combine features and run risk prediction
+  const features = { ...textResults.features, ...imageResults.features };
+  const risk = await mlService.predictRisk(features);
 
-      dpr.analysis = { text: textResults, image: imageResults, risk };
-      dpr.status = 'done';
-      await dpr.save();
+  dpr.analysis = { text: textResults, image: imageResults, risk };
+  // Add top-level decision fields for easier frontend binding
+  dpr.status = 'done';
+  dpr.decision = risk.decision;
+  dpr.riskLevel = risk.level;
+  dpr.overallScore = Math.round(( (textResults.score || 0) + (imageResults.score || 0) ) / 2 * 100);
+  dpr.feedback = (risk.reasons || []).join('; ');
+  await dpr.save();
 
-      res.json(dpr);
+  res.json(dpr);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Failed to process DPR' });

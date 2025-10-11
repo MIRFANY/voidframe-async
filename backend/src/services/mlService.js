@@ -5,9 +5,30 @@ const { spawn } = require('child_process');
 
 module.exports = {
   async predictRisk(features) {
-    // Simple demo: convert features to a mock risk score
-    const riskScore = (features.wordCount || 1000) > 1000 ? 0.9 : 0.3;
-    return { riskScore, level: riskScore > 0.7 ? 'High' : 'Low' };
+    // Prototype decision logic:
+    // - If document is very short -> high risk (missing information)
+    // - If images are missing and wordCount low -> high risk
+    const wc = features.wordCount || 0;
+    const hasImages = features.numFigures && features.numFigures > 0;
+
+    let riskScore = 0.2;
+    if (wc < 400) riskScore += 0.5; // too short
+    if (!hasImages) riskScore += 0.15;
+    if (features.readability && features.readability < 40) riskScore += 0.15;
+
+    // clamp
+    riskScore = Math.min(1, Math.max(0, riskScore));
+
+    // Decision thresholds
+    const decision = riskScore > 0.6 ? 'reject' : riskScore < 0.35 ? 'approve' : 'review';
+
+    // Return structured result including top risk reasons for frontend display
+    const reasons = [];
+    if (wc < 400) reasons.push('Document too short or incomplete');
+    if (!hasImages) reasons.push('No supporting images/figures');
+    if (features.readability && features.readability < 40) reasons.push('Low readability / unclear language');
+
+    return { riskScore, level: riskScore > 0.6 ? 'High' : riskScore > 0.35 ? 'Medium' : 'Low', decision, reasons };
   },
 
   async trainModel(datasetPath) {
