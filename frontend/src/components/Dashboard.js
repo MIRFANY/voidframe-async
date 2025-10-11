@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import DPRCard from './DPRCard';
 import DPRDetail from './DPRDetail';
 import UploadForm from './UploadForm';
+import DPRAnalyzer from './DPRAnalyzer';
 
 // Modern Dashboard: grid of cards (DPRs) + analytics card
 export default function Dashboard() {
@@ -97,6 +98,7 @@ export default function Dashboard() {
       </div>
 
       {selected && <DPRDetail dpr={selected} onClose={closeDetail} />}
+      <DPRAnalyzer />
     </div>
   );
 }
