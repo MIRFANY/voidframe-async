@@ -1,6 +1,6 @@
-# DPR Evaluator (scaffold)
+# DPR Evaluator 
 
-This workspace is a scaffold for a full-stack AI-powered DPR evaluation system.
+This workspace is a full-stack AI-powered DPR evaluation system.
 
 Structure:
 
