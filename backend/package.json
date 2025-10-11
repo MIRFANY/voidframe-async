@@ -1,5 +1,5 @@
 {
-  "name": "dpr-evaluator-backend",
+  "name": "ai-powered-dpr-assessment-backend",
   "version": "0.1.0",
   "private": true,
   "main": "src/index.js",
@@ -14,6 +14,8 @@
     "multer": "^1.4.5-lts.1",
     "body-parser": "^1.20.2",
     "axios": "^1.4.0"
+    ,
+    "pdf-parse": "^1.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
