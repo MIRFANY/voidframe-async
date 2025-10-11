@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import DPRCard from './DPRCard';
 import DPRDetail from './DPRDetail';
 import UploadForm from './UploadForm';
+import DPRAnalyzer from './DPRAnalyzer';
 
 // Modern Dashboard: grid of cards (DPRs) + analytics card
 export default function Dashboard() {
@@ -16,8 +17,8 @@ export default function Dashboard() {
   useEffect(() => {
     // lightweight health check (non-blocking)
     axios.get('/api/health')
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
 
     // Mock DPR data for offline/demo use. Each DPR contains fields used by cards and detail view.
     setDprs([
@@ -30,7 +31,7 @@ export default function Dashboard() {
 
   const filtered = dprs.filter(d => {
     const byRisk = filter === 'All' ? true : d.riskLevel === filter;
-    const byQuery = query.trim() === '' ? true : (d.title + d.site + d.author + (d.text||'')).toLowerCase().includes(query.toLowerCase());
+    const byQuery = query.trim() === '' ? true : (d.title + d.site + d.author + (d.text || '')).toLowerCase().includes(query.toLowerCase());
     return byRisk && byQuery;
   });
 
@@ -93,6 +94,11 @@ export default function Dashboard() {
           <div className="analytics-footer">
             <small>{dprs.length} total DPRs</small>
           </div>
+        </div>
+        
+        {/* GENAI */}
+        <div className="card analytics-card">
+          <DPRAnalyzer />
         </div>
       </div>
 

@@ -9,8 +9,10 @@ const routes = require('./routes');
 const config = require('./config');
 
 const app = express();
-app.use(cors());
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:5000" }));
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Mount API routes
 app.use('/api', routes);
@@ -24,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI || config.mongoUri, {
 })
   .then(() => {
     console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
   })
   .catch(err => {
     console.error('Failed to connect to MongoDB, starting server without DB', err);
