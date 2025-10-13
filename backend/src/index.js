@@ -9,8 +9,10 @@ const routes = require('./routes');
 const config = require('./config');
 
 const app = express();
-app.use(cors());
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:5000" }));
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Mount API routes
 app.use('/api', routes);
