@@ -5,11 +5,9 @@ import HeroSection from '../components/HeroSection';
 
 export default function Home() {
   const navigate = useNavigate();
-  function handleStart() {
-    // Navigate to dashboard where users can upload and manage DPRs
+  function handleStart() { 
     navigate('/dashboard');
   }
-
   return (
     <div>
       <Navbar />

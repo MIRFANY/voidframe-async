@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import DPRCard from './DPRCard';
 import DPRDetail from './DPRDetail';
 import UploadForm from './UploadForm';
+import DPRAnalyzer from './DPRAnalyzer';
 
 
 export default function Dashboard() {
@@ -17,7 +18,12 @@ export default function Dashboard() {
   const [offline, setOffline] = useState(false); // <-- offline toggle
 
   useEffect(() => {
-    axios.get('/api/health').catch(() => {});
+    // lightweight health check (non-blocking)
+    axios.get('/api/health')
+      .then(() => { })
+      .catch(() => { });
+
+    // Mock DPR data for offline/demo use. Each DPR contains fields used by cards and detail view.
     setDprs([
       { id: '1', title: 'Road widening - Sector 7', date: '2025-09-30', author: 'Inspector A', site: 'Roadworks A', text: 'Progress report...', images: [], nlpScore: 78, imageScore: 82, overallScore: 80, riskLevel: 'Low', decision: 'approve', feedback: ['Complete budget section'] },
       { id: '2', title: 'Health centre upgrade', date: '2025-08-21', author: 'Inspector B', site: 'Health Site B', text: 'Missing attachments and sketches', images: [], nlpScore: 45, imageScore: 60, overallScore: 52, riskLevel: 'Medium', decision: 'review', feedback: ['Missing floor plans', 'Budget mismatch'] },
@@ -28,7 +34,7 @@ export default function Dashboard() {
 
   const filtered = dprs.filter(d => {
     const byRisk = filter === 'All' ? true : d.riskLevel === filter;
-    const byQuery = query.trim() === '' ? true : (d.title + d.site + d.author + (d.text||'')).toLowerCase().includes(query.toLowerCase());
+    const byQuery = query.trim() === '' ? true : (d.title + d.site + d.author + (d.text || '')).toLowerCase().includes(query.toLowerCase());
     return byRisk && byQuery;
   });
 
@@ -128,6 +134,11 @@ export default function Dashboard() {
           <div className="analytics-footer mt-2 text-sm text-gray-500">
             <small>{dprs.length} total DPRs</small>
           </div>
+        </div>
+        
+        {/* GENAI */}
+        <div className="card analytics-card">
+          <DPRAnalyzer />
         </div>
       </div>
 
